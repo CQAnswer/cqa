@@ -1,4 +1,3 @@
---åˆ›å»ºbbsDBæ•°æ®åº“
 drop database if exists cqanswer;
 
 /*==============================================================*/
@@ -17,12 +16,12 @@ create table ANSWER
    Q_UUID               char(32),
    TITLE                varchar(50),
    CONTENT              varchar(500),
-   R_COUNT              int comment 'è¯¥å›ç­”æ¯è¢«è®¤åŒä¸€æ¬¡è¿›è¡Œç´¯åŠ ',
-   NR_COUNT             int comment 'è¯¥å›ç­”æ¯è¢«å¦è®¤åˆ™ç´¯åŠ ',
+   R_COUNT              int comment '¸Ã»Ø´ğÃ¿±»ÈÏÍ¬Ò»´Î½øĞĞÀÛ¼Ó',
+   NR_COUNT             int comment '¸Ã»Ø´ğÃ¿±»·ñÈÏÔòÀÛ¼Ó',
    A_DATE               date
 );
 
-alter table ANSWER comment 'å›ç­”';
+alter table ANSWER comment '»Ø´ğ';
 
 /*==============================================================*/
 /* Table: QUESTION                                              */
@@ -31,7 +30,7 @@ create table QUESTION
 (
    UUID                 char(32),
    TITLE                varchar(100),
-   CONTENT              varchar(500) comment 'ç²˜è´´ä»£ç ',
+   CONTENT              varchar(500) comment 'Õ³Ìù´úÂë',
    U_UUID               char(32),
    Q_TIME               date,
    A_COUNT              int,
@@ -40,7 +39,7 @@ create table QUESTION
    M_CODE               varchar(20)
 );
 
-alter table QUESTION comment 'é—®é¢˜';
+alter table QUESTION comment 'ÎÊÌâ';
 
 /*==============================================================*/
 /* Table: SYS_MODULE                                            */
@@ -55,7 +54,7 @@ create table SYS_MODULE
    PARENT_CODE          varchar(20)
 );
 
-alter table SYS_MODULE comment 'ç³»ç»Ÿæ¨¡å—';
+alter table SYS_MODULE comment 'ÏµÍ³Ä£¿é';
 
 /*==============================================================*/
 /* Table: SYS_NOTICE_TYPE                                       */
@@ -67,7 +66,7 @@ create table SYS_NOTICE_TYPE
    TYPE_NAME            varchar(10)
 );
 
-alter table SYS_NOTICE_TYPE comment 'ç³»ç»Ÿé€šçŸ¥ç±»å‹';
+alter table SYS_NOTICE_TYPE comment 'ÏµÍ³Í¨ÖªÀàĞÍ';
 
 /*==============================================================*/
 /* Table: SYS_USER                                              */
@@ -80,7 +79,7 @@ create table SYS_USER
    LAST_LOGIN_TIME      date
 );
 
-alter table SYS_USER comment 'æ³¨å†Œç”¨æˆ·ç™»é™†ä¿¡æ¯';
+alter table SYS_USER comment '×¢²áÓÃ»§µÇÂ½ĞÅÏ¢';
 
 /*==============================================================*/
 /* Table: SYS_USER_INFO                                         */
@@ -98,7 +97,7 @@ create table SYS_USER_INFO
    A_NOTICE_TYPE        varchar(2)
 );
 
-alter table SYS_USER_INFO comment 'ç”¨æˆ·åŸºç¡€ä¿¡æ¯';
+alter table SYS_USER_INFO comment 'ÓÃ»§»ù´¡ĞÅÏ¢';
 
 /*==============================================================*/
 /* Table: USER_ANSWER                                           */
@@ -111,7 +110,7 @@ create table USER_ANSWER
    A_DATE               date
 );
 
-alter table USER_ANSWER comment 'ç”¨æˆ·å›ç­”è¡¨è®°å½•ç”¨æˆ·å¯¹æŸä¸ªå›ç­”çš„è®¤åŒæ“ä½œ';
+alter table USER_ANSWER comment 'ÓÃ»§»Ø´ğ±í¼ÇÂ¼ÓÃ»§¶ÔÄ³¸ö»Ø´ğµÄÈÏÍ¬²Ù×÷';
 
 /*==============================================================*/
 /* Table: USER_QUESTION                                         */
@@ -123,5 +122,4 @@ create table USER_QUESTION
    Q_DATE               date
 );
 
-alter table USER_QUESTION comment 'ç”¨æˆ·é—®é¢˜è¡¨è®°å½•ç”¨æˆ·å¯¹æŸä¸ªé—®é¢˜çš„åŒé—®æ“ä½œ';
-
+alter table USER_QUESTION comment 'ÓÃ»§ÎÊÌâ±í¼ÇÂ¼ÓÃ»§¶ÔÄ³¸öÎÊÌâµÄÍ¬ÎÊ²Ù×÷';
