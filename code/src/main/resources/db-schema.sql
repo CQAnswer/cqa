@@ -17,7 +17,7 @@ create table ANSWER
    Q_UUID               char(32),
    TITLE                varchar(50),
    CONTENT              varchar(500),
-   R_COUNT              int comment '该回答每没认同一次进行累加',
+   R_COUNT              int comment '该回答每被认同一次进行累加',
    NR_COUNT             int comment '该回答每被否认则累加',
    A_DATE               date
 );
