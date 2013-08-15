@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop" 
+	xmlns:jee="http://www.springframework.org/schema/jee"
+	xsi:schemaLocation="http://www.springframework.org/schema/jdbc 
+						http://www.springframework.org/schema/jdbc/spring-jdbc-3.0.xsd
+						http://www.springframework.org/schema/beans 
+						http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+						http://www.springframework.org/schema/tx 
+						http://www.springframework.org/schema/tx/spring-tx.xsd
+						http://www.springframework.org/schema/aop 
+						http://www.springframework.org/schema/aop/spring-aop.xsd
+						http://www.springframework.org/schema/jee 
+						http://www.springframework.org/schema/jee/spring-jee.xsd" >
+		
+	<!-- 定义受环境影响易变的变量 -->
+	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+	    <property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_OVERRIDE"/>
+	    <property name="ignoreResourceNotFound" value="true"/>
+	    <property name="locations">
+	        <list>
+	            <!-- 标准配置 -->
+	            <value>
+	                classpath*:/cqa.properties
+	            </value>
+	        </list>
+	    </property>
+	</bean>
+	
+	<!-- Root Context: defines shared resources visible to all other web components -->
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+	 destroy-method="close">
+	    <property name="driverClassName" value="${jdbc.driver}"/>
+	    <property name="url" value="${jdbc.url}"/>
+	    <property name="username" value="${jdbc.username}"/>
+	    <property name="password" value="${jdbc.password}"/>
+	    
+	    <!-- Connection Pooling Info -->
+	    <property name="maxActive" value="${dbcp.maxActive}"/>
+	    <property name="maxIdle" value="${dbcp.maxIdle}"/>
+	    <property name="defaultAutoCommit" value="true"/>
+	    <!-- 连接Idle一个小时后超时 -->
+	    <property name="timeBetweenEvictionRunsMillis" value="3600000"/>
+	    <property name="minEvictableIdleTimeMillis" value="3600000"/> 
+	</bean>
+	
+	<!-- <jdbc:initialize-database data-source="dataSource" ignore-failures="ALL">
+	    <jdbc:script location="classpath:db-schema.sql"/>
+	</jdbc:initialize-database> -->
+	
+	
+	<!-- 事务管理器 -->
+	<!-- <bean id="txManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	<tx:advice id="txAdvice" transaction-manager="txManager">
+		<tx:attributes>
+			只读事务,service中所有以query/select/find/get/load打头的方法名
+			<tx:method name="query*" read-only="true" />
+			<tx:method name="select*" read-only="true" />
+			<tx:method name="find*" read-only="true" />
+			<tx:method name="get*" read-only="true" />
+			<tx:method name="load*" read-only="true" />
+			需要事务
+			<tx:method name="*" propagation="REQUIRED" />
+		</tx:attributes>
+	</tx:advice>
+	<aop:config proxy-target-class="true" >
+	    <aop:pointcut id="CQAServiceOperation"
+			expression="execution(* com.cqa..*.service.*.*(..))" />
+		<aop:advisor pointcut-ref="CQAServiceOperation"
+			advice-ref="txAdvice" />
+	</aop:config>
+	<aop:config proxy-target-class="true" >
+	    <aop:pointcut id="CQAScheOperation"
+			expression="execution(* com.cqa..*.scheduler.*.*(..))" />
+		<aop:advisor pointcut-ref="CQAScheOperation"
+			advice-ref="txAdvice" />
+	</aop:config> -->
+
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		<property name="dataSource">
+			<ref bean="dataSource" />
+		</property>
+		<property name="mappingLocations">
+			<list>
+							
+			</list>
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
+				<prop key="hibernate.show_sql">true</prop>
+				<prop key="hibernate.format_sql">true</prop>
+				<prop key="hibernate.use_outer_join">false</prop>
+				<prop key="hibernate.max_fetch_depth">1</prop>
+				<prop key="hibernate.cache.use_query_cache">false</prop>
+			</props>
+		</property>
+	</bean>
+  
+ 	<bean id="baseDao" class="com.cqa.dao.impl.BaseDAOImpl">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+		<property name="dataSource">
+			<ref bean="dataSource" />
+		</property>
+	</bean>
+	
+	<bean id="baseServiceParent" abstract="true">
+		<property name="baseDao">
+			<ref bean="baseDao" />
+		</property>
+	</bean>
+	
+	<bean id="sysUserService" parent="baseServiceParent"
+		class="com.cqa.sys.service.SysUserService">
+	</bean>
+</beans>
